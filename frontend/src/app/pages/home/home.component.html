@@ -7,7 +7,8 @@
   </a>
 
   <nav>
-    <a href="#collection">Collection</a>
+    <a href="#categories">Categories</a>
+    <a routerLink="/category/all">All Pieces</a>
     <a href="#story">Our Story</a>
     <a href="#contact">Contact</a>
   </nav>
@@ -79,7 +80,7 @@
   </section>
 
   <!-- ========================= CATEGORIES ========================= -->
-  <section class="categories">
+  <section class="categories" id="categories">
     <p class="eyebrow center">Shop by Category</p>
     <h2>Find your Shringar</h2>
 
@@ -93,6 +94,12 @@
         </a>
       }
     </div>
+
+    <div class="category-explore-all">
+      <a [routerLink]="['/category', 'all']" class="explore-all-link">
+        Explore All Pieces <span>→</span>
+      </a>
+    </div>
   </section>
 
   <!-- ========================= INTRO ========================= -->
@@ -103,49 +110,6 @@
       Jewellery doesn't always have to make a statement. Sometimes, the smallest details say the most.
       Discover pieces designed to become part of your everyday.
     </p>
-  </section>
-
-  <!-- ========================= COLLECTION ========================= -->
-  <section class="collection" id="collection">
-    <div class="collection-header">
-      <div>
-        <p class="eyebrow">Curated for you</p>
-        <h2>The Collection</h2>
-      </div>
-      <a href="#collection" class="view-all">View all →</a>
-    </div>
-
-    @if (loading()) {
-      <p class="state-text">Loading the collection…</p>
-    } @else if (errorMessage()) {
-      <p class="state-text">{{ errorMessage() }}</p>
-    } @else if (products().length === 0) {
-      <p class="state-text">New pieces are on their way. Check back soon.</p>
-    } @else {
-      <div class="products">
-        @for (product of products(); track product._id) {
-          <article class="product">
-            <div class="product-image">
-              <img [src]="resolveImage(product.imageUrl)" [alt]="product.name" />
-              <button
-                class="product-whatsapp"
-                (click)="openWhatsApp(product.name, product.productCode, product.price, resolveImage(product.imageUrl))"
-              >
-                Enquire on WhatsApp
-              </button>
-            </div>
-
-            <div class="product-info">
-              <div>
-                <p class="product-category">{{ product.category }}</p>
-                <h3 class="product-name">{{ product.name }}</h3>
-              </div>
-              <span class="product-price">₹{{ product.price | number }}</span>
-            </div>
-          </article>
-        }
-      </div>
-    }
   </section>
 
   <!-- ========================= STORY ========================= -->
@@ -215,7 +179,8 @@
     </div>
 
     <div class="footer-links">
-      <a href="#collection">Collection</a>
+      <a href="#categories">Categories</a>
+      <a routerLink="/category/all">All Pieces</a>
       <a href="#story">Our Story</a>
       <a href="#contact">Contact</a>
       <a href="https://instagram.com/" target="_blank">Instagram</a>

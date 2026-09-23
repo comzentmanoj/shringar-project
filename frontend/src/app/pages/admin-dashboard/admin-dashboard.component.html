@@ -4,73 +4,201 @@
     <button class="logout" (click)="logout()">Logout</button>
   </header>
 
-  @if (errorMessage()) { <p class="error">{{ errorMessage() }}</p> }
-
   <form class="product-form" (ngSubmit)="onSubmit()">
     <h2>{{ editingId ? 'Edit Product' : 'Add New Product' }}</h2>
 
     <div class="grid">
       <div>
         <label>Name</label>
-        <input [(ngModel)]="form.name" name="name" required />
+        <input [(ngModel)]="form.name" name="name" placeholder="e.g. Royal Gold Bangles" required />
       </div>
       <div>
         <label>Category</label>
-        <input [(ngModel)]="form.category" name="category" required />
+        <input [(ngModel)]="form.category" name="category" list="category-suggestions" placeholder="e.g. Bangles" required />
+        <datalist id="category-suggestions">
+          <option value="Bangles">
+          <option value="Earrings">
+          <option value="Necklaces">
+          <option value="Rings">
+          <option value="Anklet">
+          <option value="Bracelet">
+        </datalist>
       </div>
       <div>
         <label>Price (₹)</label>
-        <input type="number" [(ngModel)]="form.price" name="price" required />
+        <input type="number" [(ngModel)]="form.price" name="price" min="1" placeholder="e.g. 1499" required />
       </div>
       <div>
         <label>Product Code</label>
-        <input [(ngModel)]="form.productCode" name="productCode" required />
+        <input [(ngModel)]="form.productCode" name="productCode" placeholder="e.g. B03, EAR-10" required />
       </div>
     </div>
 
     <label>Description</label>
-    <textarea [(ngModel)]="form.description" name="description"></textarea>
+    <textarea [(ngModel)]="form.description" name="description" placeholder="Brief details about material, plating, styling..."></textarea>
 
-    <label>Image {{ editingId ? '(leave empty to keep current)' : '' }}</label>
-    <input type="file" accept=".jpg,.jpeg,.png,.webp" (change)="onFileSelected($event)" />
+    <label>Image {{ editingId ? '(leave empty to keep current)' : '(Required)' }}</label>
+    <div class="file-upload-wrapper">
+      <input type="file" accept=".jpg,.jpeg,.png,.webp" (change)="onFileSelected($event)" />
+      @if (selectedFile) {
+        <span class="file-chosen-name">Selected: <strong>{{ selectedFile.name }}</strong></span>
+      }
+    </div>
 
-    <label class="checkbox">
-      <input type="checkbox" [(ngModel)]="form.featured" name="featured" />
-      Show on public site
-    </label>
+    <div class="checkbox-group">
+      <label class="checkbox">
+        <input type="checkbox" [(ngModel)]="form.featured" name="featured" />
+        Show on public site
+      </label>
+
+      <label class="checkbox">
+        <input type="checkbox" [(ngModel)]="form.isHero" name="isHero" />
+        Feature in Hero Carousel
+      </label>
+    </div>
+
+    @if (errorMessage()) {
+      <div class="form-alert error-alert">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>{{ errorMessage() }}</span>
+      </div>
+    }
+
+    @if (successMessage()) {
+      <div class="form-alert success-alert">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 6L9 17l-5-5"></path>
+        </svg>
+        <span>{{ successMessage() }}</span>
+      </div>
+    }
 
     <div class="form-actions">
-      <button type="submit">{{ editingId ? 'Update Product' : 'Add Product' }}</button>
+      <button type="submit" [disabled]="submitting()">
+        @if (submitting()) {
+          <span>Saving Product...</span>
+        } @else {
+          <span>{{ editingId ? 'Update Product' : 'Add Product' }}</span>
+        }
+      </button>
       @if (editingId) {
-        <button type="button" class="cancel" (click)="resetForm()">Cancel</button>
+        <button type="button" class="cancel" (click)="resetForm()" [disabled]="submitting()">Cancel</button>
       }
     </div>
   </form>
 
-  <h2>Existing Products</h2>
+  <div class="table-header-info">
+    <div>
+      <h2>Existing Products</h2>
+      <p class="table-hint">
+        Drag rows using <strong>⠿</strong> or click <strong>▲ ▼</strong> to reorder. Check <strong>Show in Hero</strong> to choose which products appear in the Hero Carousel.
+      </p>
+    </div>
+
+    <div class="hero-actions-bar">
+      <div class="hero-status-pill">
+        <span class="pulse-dot"></span>
+        Hero Carousel: <strong>{{ heroCount }} {{ heroCount === 1 ? 'slide' : 'slides' }}</strong> selected
+      </div>
+
+      <button
+        type="button"
+        class="save-hero-btn"
+        [class.saved]="saveStatus() === 'saved'"
+        (click)="saveHeroOrder()"
+        [disabled]="saveStatus() === 'saving'"
+      >
+        @if (saveStatus() === 'saving') {
+          <span>Saving...</span>
+        } @else if (saveStatus() === 'saved') {
+          <span>Saved to Home Carousel ✓</span>
+        } @else {
+          <span>Save Hero Order</span>
+        }
+      </button>
+    </div>
+  </div>
 
   @if (loading()) {
     <p>Loading…</p>
   } @else {
-    <table class="product-table">
-      <thead>
-        <tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Code</th><th>Actions</th></tr>
-      </thead>
-      <tbody>
-        @for (p of products(); track p._id) {
+    <div class="table-container">
+      <table class="product-table">
+        <thead>
           <tr>
-            <td><img [src]="resolveImage(p.imageUrl)" [alt]="p.name" class="thumb" /></td>
-            <td>{{ p.name }}</td>
-            <td>{{ p.category }}</td>
-            <td>₹{{ p.price }}</td>
-            <td>{{ p.productCode }}</td>
-            <td>
-              <button (click)="editProduct(p)">Edit</button>
-              <button class="delete" (click)="deleteProduct(p._id)">Delete</button>
-            </td>
+            <th style="width: 70px;">Order</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Code</th>
+            <th>Hero Carousel</th>
+            <th>Actions</th>
           </tr>
-        }
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          @for (p of products(); track p._id; let i = $index) {
+            <tr
+              draggable="true"
+              (dragstart)="onDragStart(i, $event)"
+              (dragover)="onDragOver(i, $event)"
+              (drop)="onDrop(i, $event)"
+              [class.dragging]="draggedIndex === i"
+              [class.hero-row]="p.isHero"
+            >
+              <td class="order-cell">
+                <span class="drag-handle" title="Drag row to reorder">⠿</span>
+                <div class="arrow-buttons">
+                  <button
+                    type="button"
+                    class="arrow-btn"
+                    [disabled]="i === 0"
+                    (click)="moveUp(i, $event)"
+                    title="Move Up"
+                  >
+                    ▲
+                  </button>
+                  <button
+                    type="button"
+                    class="arrow-btn"
+                    [disabled]="i === products().length - 1"
+                    (click)="moveDown(i, $event)"
+                    title="Move Down"
+                  >
+                    ▼
+                  </button>
+                </div>
+              </td>
+              <td><img [src]="resolveImage(p.imageUrl)" [alt]="p.name" class="thumb" /></td>
+              <td><strong>{{ p.name }}</strong></td>
+              <td>{{ p.category }}</td>
+              <td>₹{{ p.price }}</td>
+              <td><code>{{ p.productCode }}</code></td>
+              <td class="hero-cell">
+                <label class="hero-toggle-label">
+                  <input
+                    type="checkbox"
+                    [checked]="p.isHero"
+                    (change)="toggleHero(p, $event)"
+                  />
+                  <span>Show in Hero</span>
+                </label>
+                @if (getHeroSlideNumber(p); as slideNum) {
+                  <span class="hero-badge">Slide #{{ slideNum }}</span>
+                }
+              </td>
+              <td class="actions-cell">
+                <button (click)="editProduct(p)">Edit</button>
+                <button class="delete" (click)="deleteProduct(p._id)">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
   }
 </div>

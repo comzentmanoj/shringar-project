@@ -43,6 +43,16 @@ const productSchema = new mongoose.Schema(
       default: true,
       // controls whether it shows on the public "Collection" section
     },
+    isHero: {
+      type: Boolean,
+      default: false,
+      // controls whether it shows on the Hero Carousel slider
+    },
+    heroOrder: {
+      type: Number,
+      default: 0,
+      // display order in the Hero Carousel slider
+    },
   },
   { timestamps: true }
 );

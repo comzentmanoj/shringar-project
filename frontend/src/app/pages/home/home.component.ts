@@ -28,7 +28,40 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Carousel state
   heroIndex = signal<number>(0);
-  heroProducts = computed(() => this.products().slice(0, 5));
+  heroProducts = computed(() => {
+    let configMap = new Map<string, { isHero: boolean; heroOrder: number }>();
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const stored = localStorage.getItem('shringar_hero_config');
+        if (stored) {
+          const parsed = JSON.parse(stored) as { id: string; isHero: boolean; heroOrder: number }[];
+          for (const item of parsed) {
+            configMap.set(item.id, item);
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('Could not read hero config from localStorage', e);
+    }
+
+    const prods = this.products().map((p) => {
+      const conf = configMap.get(p._id);
+      if (conf) {
+        return { ...p, isHero: conf.isHero, heroOrder: conf.heroOrder };
+      }
+      return p;
+    });
+
+    const selected = prods
+      .filter((p) => p.isHero)
+      .sort((a, b) => (a.heroOrder ?? 0) - (b.heroOrder ?? 0));
+
+    if (selected.length > 0) {
+      return selected;
+    }
+
+    return this.products().slice(0, 5);
+  });
   private heroTimer?: ReturnType<typeof setInterval>;
 
   // ---- EDIT HERE ----
@@ -67,7 +100,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.productService.getAll().subscribe({
       next: (res) => {
-        this.products.set(res.products.filter((p) => p.featured));
+        this.products.set(res.products);
         this.loading.set(false);
         this.startHeroAutoSlide();
       },

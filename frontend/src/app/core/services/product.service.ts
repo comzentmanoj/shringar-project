@@ -32,6 +32,10 @@ export class ProductService {
     return this.http.delete<{ message: string; id: string }>(`${this.base}/${id}`);
   }
 
+  reorder(items: { id: string; isHero?: boolean; heroOrder?: number }[]): Observable<{ message: string; products: Product[] }> {
+    return this.http.put<{ message: string; products: Product[] }>(`${this.base}/reorder`, { items });
+  }
+
   /** Builds the full, browsable URL for a product image returned by the API. */
   resolveImageUrl(imageUrl: string): string {
     if (!imageUrl) return '';
@@ -47,6 +51,8 @@ export class ProductService {
     formData.append('productCode', value.productCode);
     formData.append('description', value.description ?? '');
     formData.append('featured', String(value.featured ?? true));
+    formData.append('isHero', String(value.isHero ?? false));
+    formData.append('heroOrder', String(value.heroOrder ?? 0));
     if (imageFile) {
       formData.append('image', imageFile);
     }

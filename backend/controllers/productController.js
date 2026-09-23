@@ -28,7 +28,7 @@ async function getProductById(req, res) {
 // POST /api/products  (admin only, multipart/form-data with "image" file)
 async function createProduct(req, res) {
   try {
-    const { name, category, price, productCode, description, featured } = req.body;
+    const { name, category, price, productCode, description, featured, isHero, heroOrder } = req.body;
 
     if (!name || !category || !price || !productCode) {
       return res.status(400).json({ message: 'name, category, price and productCode are required' });
@@ -47,6 +47,8 @@ async function createProduct(req, res) {
       description,
       imageUrl,
       featured: featured === undefined ? true : featured === 'true' || featured === true,
+      isHero: isHero === 'true' || isHero === true,
+      heroOrder: heroOrder !== undefined ? Number(heroOrder) : 0,
     });
 
     res.status(201).json({ product });
@@ -65,7 +67,7 @@ async function updateProduct(req, res) {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ message: 'Product not found' });
 
-    const { name, category, price, productCode, description, featured } = req.body;
+    const { name, category, price, productCode, description, featured, isHero, heroOrder } = req.body;
 
     if (name !== undefined) product.name = name;
     if (category !== undefined) product.category = category;
@@ -73,6 +75,8 @@ async function updateProduct(req, res) {
     if (productCode !== undefined) product.productCode = productCode;
     if (description !== undefined) product.description = description;
     if (featured !== undefined) product.featured = featured === 'true' || featured === true;
+    if (isHero !== undefined) product.isHero = isHero === 'true' || isHero === true;
+    if (heroOrder !== undefined) product.heroOrder = Number(heroOrder);
 
     if (req.file) {
       // delete the old image file from disk before saving the new one
@@ -86,6 +90,30 @@ async function updateProduct(req, res) {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error while updating product' });
+  }
+}
+
+// PUT /api/products/reorder  (admin only, batch reorder hero products)
+async function reorderProducts(req, res) {
+  try {
+    const { items } = req.body;
+    if (!Array.isArray(items)) {
+      return res.status(400).json({ message: 'items array is required' });
+    }
+
+    const updates = items.map((item) =>
+      Product.findByIdAndUpdate(item.id, {
+        ...(item.isHero !== undefined && { isHero: Boolean(item.isHero) }),
+        ...(item.heroOrder !== undefined && { heroOrder: Number(item.heroOrder) }),
+      })
+    );
+
+    await Promise.all(updates);
+    const products = await Product.find().sort({ createdAt: -1 });
+    res.json({ message: 'Products reordered successfully', products });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error while reordering products' });
   }
 }
 
@@ -112,5 +140,6 @@ module.exports = {
   getProductById,
   createProduct,
   updateProduct,
+  reorderProducts,
   deleteProduct,
 };

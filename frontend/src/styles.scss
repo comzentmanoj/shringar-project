@@ -68,15 +68,25 @@ button {
 ========================== */
 
 header {
-  height: 82px;
+  height: 78px;
   padding: 0 6%;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   width: 100%;
-  z-index: 10;
+  z-index: 100;
+
+  background: rgba(250, 246, 240, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(45, 33, 29, 0.08);
+  box-shadow: 0 4px 20px rgba(45, 33, 29, 0.04);
+  transition: all 0.3s ease;
 
   color: var(--brown);
 }
@@ -87,11 +97,12 @@ header {
   display: flex;
   flex-direction: column;
   line-height: 1;
+  flex-shrink: 0;
 }
 
 .logo-main {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 31px;
+  font-size: 30px;
   font-weight: 500;
   letter-spacing: -0.5px;
 }
@@ -101,30 +112,39 @@ header {
   letter-spacing: 3px;
   text-transform: uppercase;
   text-align: center;
-  margin-top: 6px;
+  margin-top: 5px;
+  color: var(--brown-soft);
 }
 
 nav {
   display: flex;
-  gap: 38px;
+  align-items: center;
+  gap: 32px;
 }
 
 nav a {
   text-decoration: none;
   color: var(--brown);
   font-size: 12px;
+  letter-spacing: 0.5px;
+  font-weight: 400;
   position: relative;
+  transition: color 0.2s ease;
 }
 
 nav a::after {
   content: '';
   position: absolute;
   left: 0;
-  bottom: -5px;
+  bottom: -4px;
   width: 0;
   height: 1px;
-  background: var(--brown);
-  transition: 0.3s;
+  background: var(--rose);
+  transition: width 0.3s ease;
+}
+
+nav a:hover {
+  color: var(--rose);
 }
 
 nav a:hover::after {
@@ -133,17 +153,57 @@ nav a:hover::after {
 
 .nav-whatsapp {
   border: 1px solid var(--brown);
-  background: transparent;
-  padding: 11px 19px;
+  background: var(--white);
+  padding: 10px 20px;
   border-radius: 30px;
   color: var(--brown);
   font-size: 11px;
-  transition: 0.3s;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(45, 33, 29, 0.06);
+  flex-shrink: 0;
+  transition: all 0.3s ease;
 }
 
 .nav-whatsapp:hover {
   background: var(--brown);
   color: var(--white);
+  border-color: var(--brown);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 800px) {
+  header {
+    height: 70px;
+    padding: 0 5%;
+  }
+
+  .logo-main {
+    font-size: 25px;
+  }
+
+  nav {
+    gap: 16px;
+  }
+
+  nav a {
+    font-size: 11px;
+  }
+
+  .nav-whatsapp {
+    padding: 8px 15px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 580px) {
+  nav {
+    gap: 12px;
+  }
+
+  nav a:nth-child(n + 3) {
+    display: none;
+  }
 }
 
 /* =========================

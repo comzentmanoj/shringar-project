@@ -5,6 +5,7 @@ const {
   getProductById,
   createProduct,
   updateProduct,
+  reorderProducts,
   deleteProduct,
 } = require('../controllers/productController');
 const { requireAdminAuth } = require('../middleware/authMiddleware');
@@ -16,6 +17,7 @@ router.get('/:id', getProductById);
 
 // Admin only - requires valid JWT
 router.post('/', requireAdminAuth, upload.single('image'), createProduct);
+router.put('/reorder', requireAdminAuth, reorderProducts);
 router.put('/:id', requireAdminAuth, upload.single('image'), updateProduct);
 router.delete('/:id', requireAdminAuth, deleteProduct);
 

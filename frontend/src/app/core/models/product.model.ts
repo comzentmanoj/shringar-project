@@ -7,6 +7,8 @@ export interface Product {
   imageUrl: string; // relative path from backend, e.g. /uploads/products/xyz.jpg
   description?: string;
   featured: boolean;
+  isHero?: boolean;
+  heroOrder?: number;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -18,4 +20,6 @@ export interface ProductFormValue {
   productCode: string;
   description?: string;
   featured?: boolean;
+  isHero?: boolean;
+  heroOrder?: number;
 }
