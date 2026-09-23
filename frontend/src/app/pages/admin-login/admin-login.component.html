@@ -1,0 +1,20 @@
+<div class="login-wrapper">
+  <form class="login-card" (ngSubmit)="onSubmit()">
+    <h1>Admin Login</h1>
+    <p class="subtitle">Shringar by Lakshuu — management panel</p>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    <label>Email</label>
+    <input type="email" [(ngModel)]="email" name="email" placeholder="admin@shringarbylakshuu.com" />
+
+    <label>Password</label>
+    <input type="password" [(ngModel)]="password" name="password" placeholder="••••••••" />
+
+    <button type="submit" [disabled]="loading()">
+      {{ loading() ? 'Signing in…' : 'Sign In' }}
+    </button>
+  </form>
+</div>

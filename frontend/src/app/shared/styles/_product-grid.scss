@@ -1,0 +1,97 @@
+// src/app/shared/styles/_product-grid.scss
+
+/* =========================
+   SHARED PRODUCT GRID
+   Used by: home.component.scss (featured collection)
+            category.component.scss (category listing)
+   Import with: @use '../../shared/styles/product-grid';
+========================== */
+
+.state-text {
+  color: var(--brown-soft);
+  font-size: 13px;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.product-image {
+  height: 470px;
+  overflow: hidden;
+  background: var(--cream);
+  position: relative;
+}
+
+.product-image img {
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.product:hover img {
+  transform: scale(1.04);
+}
+
+.product-whatsapp {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  padding: 13px;
+  border: none;
+  background: rgba(255, 253, 249, 0.94);
+  color: var(--brown);
+  font-size: 11px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: 0.3s;
+}
+
+.product:hover .product-whatsapp {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.product-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 2px;
+}
+
+.product-category {
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin-bottom: 6px;
+}
+
+.product-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.product-price {
+  font-size: 12px;
+  padding-top: 15px;
+}
+
+@media (max-width: 800px) {
+  .products {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+
+  .product-image {
+    height: 480px;
+  }
+
+  .product-whatsapp {
+    opacity: 1;
+    transform: none;
+  }
+}

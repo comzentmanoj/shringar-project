@@ -1,0 +1,76 @@
+<div class="dashboard">
+  <header class="dash-header">
+    <h1>Manage Products</h1>
+    <button class="logout" (click)="logout()">Logout</button>
+  </header>
+
+  @if (errorMessage()) { <p class="error">{{ errorMessage() }}</p> }
+
+  <form class="product-form" (ngSubmit)="onSubmit()">
+    <h2>{{ editingId ? 'Edit Product' : 'Add New Product' }}</h2>
+
+    <div class="grid">
+      <div>
+        <label>Name</label>
+        <input [(ngModel)]="form.name" name="name" required />
+      </div>
+      <div>
+        <label>Category</label>
+        <input [(ngModel)]="form.category" name="category" required />
+      </div>
+      <div>
+        <label>Price (₹)</label>
+        <input type="number" [(ngModel)]="form.price" name="price" required />
+      </div>
+      <div>
+        <label>Product Code</label>
+        <input [(ngModel)]="form.productCode" name="productCode" required />
+      </div>
+    </div>
+
+    <label>Description</label>
+    <textarea [(ngModel)]="form.description" name="description"></textarea>
+
+    <label>Image {{ editingId ? '(leave empty to keep current)' : '' }}</label>
+    <input type="file" accept=".jpg,.jpeg,.png,.webp" (change)="onFileSelected($event)" />
+
+    <label class="checkbox">
+      <input type="checkbox" [(ngModel)]="form.featured" name="featured" />
+      Show on public site
+    </label>
+
+    <div class="form-actions">
+      <button type="submit">{{ editingId ? 'Update Product' : 'Add Product' }}</button>
+      @if (editingId) {
+        <button type="button" class="cancel" (click)="resetForm()">Cancel</button>
+      }
+    </div>
+  </form>
+
+  <h2>Existing Products</h2>
+
+  @if (loading()) {
+    <p>Loading…</p>
+  } @else {
+    <table class="product-table">
+      <thead>
+        <tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Code</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        @for (p of products(); track p._id) {
+          <tr>
+            <td><img [src]="resolveImage(p.imageUrl)" [alt]="p.name" class="thumb" /></td>
+            <td>{{ p.name }}</td>
+            <td>{{ p.category }}</td>
+            <td>₹{{ p.price }}</td>
+            <td>{{ p.productCode }}</td>
+            <td>
+              <button (click)="editProduct(p)">Edit</button>
+              <button class="delete" (click)="deleteProduct(p._id)">Delete</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

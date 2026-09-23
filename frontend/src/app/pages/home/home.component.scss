@@ -1,0 +1,497 @@
+// src/app/pages/home/home.component.scss
+@use '../../shared/styles/product-grid';
+
+/* =========================
+   HERO CAROUSEL
+========================== */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.hero-carousel {
+  position: relative;
+  min-height: 100vh;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 44% 56%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.9s ease;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+}
+
+.hero-content {
+  padding: 150px 11% 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--ivory);
+}
+
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(55px, 6vw, 86px);
+  line-height: 0.95;
+  letter-spacing: -3px;
+  max-width: 550px;
+}
+
+.hero h1 em {
+  color: var(--rose);
+  font-style: italic;
+}
+
+.hero-text {
+  max-width: 390px;
+  margin-top: 30px;
+  margin-bottom: 35px;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--brown-soft);
+}
+
+.primary-button {
+  width: fit-content;
+  background: var(--brown);
+  color: var(--white);
+  border: none;
+  border-radius: 30px;
+  padding: 15px 25px;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+  transition: 0.3s;
+}
+
+.primary-button span {
+  margin-left: 20px;
+}
+
+.primary-button:hover {
+  transform: translateY(-2px);
+}
+
+.hero-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-image img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-label {
+  position: absolute;
+  bottom: 28px;
+  left: 28px;
+  background: rgba(250, 246, 240, 0.92);
+  padding: 13px 17px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.hero-label span {
+  color: var(--rose);
+  margin-right: 12px;
+}
+
+.hero-dots {
+  position: absolute;
+  bottom: 34px;
+  right: 6%;
+  z-index: 5;
+  display: flex;
+  gap: 10px;
+}
+
+.hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(45, 33, 29, 0.25);
+  transition: 0.3s;
+  padding: 0;
+}
+
+.hero-dot.active {
+  background: var(--brown);
+  width: 22px;
+  border-radius: 4px;
+}
+
+/* =========================
+   CATEGORIES
+========================== */
+
+.categories {
+  padding: 100px 6% 120px;
+  text-align: center;
+}
+
+.categories h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(38px, 4.5vw, 54px);
+  font-weight: 400;
+  margin-bottom: 55px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.category-tile {
+  text-decoration: none;
+  color: var(--brown);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.category-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--cream);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.category-image img {
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.category-tile:hover .category-image {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 30px rgba(45, 33, 29, 0.15);
+}
+
+.category-tile:hover .category-image img {
+  transform: scale(1.08);
+}
+
+.category-name {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* =========================
+   INTRO
+========================== */
+
+.intro {
+  text-align: center;
+  padding: 140px 25px 130px;
+  max-width: 780px;
+  margin: auto;
+}
+
+.intro h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(44px, 5vw, 65px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+}
+
+.intro h2 em {
+  color: var(--rose);
+}
+
+.intro-text {
+  max-width: 450px;
+  margin: 28px auto 0;
+  color: var(--brown-soft);
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+/* =========================
+   COLLECTION
+========================== */
+
+.collection {
+  padding: 80px 6% 130px;
+}
+
+.collection-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 45px;
+}
+
+.collection-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.view-all {
+  text-decoration: none;
+  color: var(--brown);
+  font-size: 11px;
+  border-bottom: 1px solid var(--brown);
+  padding-bottom: 4px;
+}
+
+/* =========================
+   BRAND STORY
+========================== */
+
+.story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--rose-light);
+}
+
+.story-image {
+  min-height: 650px;
+}
+
+.story-image img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.story-content {
+  padding: 12%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.story-content h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(45px, 5vw, 65px);
+  font-weight: 400;
+  line-height: 1;
+  max-width: 480px;
+}
+
+.story-content h2 em {
+  color: var(--rose);
+}
+
+.story-text {
+  max-width: 430px;
+  margin-top: 28px;
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--brown-soft);
+}
+
+.story-button {
+  width: fit-content;
+  margin-top: 30px;
+  border: none;
+  border-bottom: 1px solid var(--brown);
+  background: transparent;
+  padding-bottom: 5px;
+  font-size: 11px;
+  color: var(--brown);
+}
+
+/* =========================
+   VALUES
+========================== */
+
+.values {
+  padding: 130px 6%;
+  text-align: center;
+}
+
+.values h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 50px;
+  font-weight: 400;
+  margin-bottom: 60px;
+}
+
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 900px;
+  margin: auto;
+}
+
+.value {
+  padding: 20px 35px;
+  border-right: 1px solid rgba(45, 33, 29, 0.12);
+}
+
+.value:last-child {
+  border-right: none;
+}
+
+.value-number {
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--gold);
+  font-size: 25px;
+  margin-bottom: 14px;
+}
+
+.value h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 23px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.value p {
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--brown-soft);
+}
+
+/* =========================
+   WHATSAPP CTA
+========================== */
+
+.cta {
+  background: var(--brown);
+  color: var(--ivory);
+  text-align: center;
+  padding: 130px 25px;
+}
+
+.cta .eyebrow {
+  color: var(--rose-light);
+}
+
+.cta h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px, 6vw, 75px);
+  font-weight: 400;
+  line-height: 0.95;
+}
+
+.cta-text {
+  max-width: 400px;
+  margin: 25px auto 30px;
+  color: rgba(250, 246, 240, 0.65);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.cta-button {
+  background: var(--rose);
+  border: none;
+  color: var(--brown);
+  border-radius: 30px;
+  padding: 15px 27px;
+  font-size: 11px;
+}
+
+/* =========================
+   MOBILE
+========================== */
+
+@media (max-width: 800px) {
+  .hero-slide {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-content {
+    padding: 125px 25px 65px;
+  }
+
+  .hero h1 {
+    font-size: 57px;
+  }
+
+  .hero-image {
+    height: 560px;
+  }
+
+  .hero-dots {
+    right: 50%;
+    transform: translateX(50%);
+    bottom: 18px;
+  }
+
+  .categories {
+    padding: 70px 20px 90px;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .intro {
+    padding: 100px 25px;
+  }
+
+  .collection {
+    padding: 60px 20px 90px;
+  }
+
+  .collection-header h2 {
+    font-size: 42px;
+  }
+
+  .story {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .story-image {
+    height: 500px;
+    min-height: 0;
+  }
+
+  .story-content {
+    padding: 80px 25px;
+  }
+
+  .values {
+    padding: 90px 20px;
+  }
+
+  .values h2 {
+    font-size: 42px;
+  }
+
+  .value-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .value {
+    border-right: none;
+    border-bottom: 1px solid rgba(45, 33, 29, 0.12);
+    padding: 30px;
+  }
+
+  .value:last-child {
+    border-bottom: none;
+  }
+
+  .cta {
+    padding: 100px 25px;
+  }
+}

@@ -1,0 +1,46 @@
+.dashboard { padding: 30px 5%; font-family: 'DM Sans', sans-serif; }
+
+.dash-header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;
+}
+.dash-header h1 { font-family: 'Cormorant Garamond', serif; }
+
+.logout {
+  background: #2d211d; color: #fffdf9; border: none; padding: 8px 16px; border-radius: 20px; font-size: 12px;
+}
+
+.error { color: #b3261e; margin-bottom: 15px; }
+
+.product-form {
+  background: #faf6f0; padding: 24px; border-radius: 10px; margin-bottom: 40px; display: flex; flex-direction: column; gap: 10px;
+}
+.product-form h2 { font-family: 'Cormorant Garamond', serif; margin-bottom: 10px; }
+
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+input, textarea {
+  padding: 9px 11px; border: 1px solid #ead6d2; border-radius: 6px; font-size: 13px; width: 100%;
+}
+textarea { min-height: 70px; }
+
+.checkbox { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.checkbox input { width: auto; }
+
+.form-actions { display: flex; gap: 10px; margin-top: 10px; }
+.form-actions button {
+  padding: 10px 20px; border: none; border-radius: 20px; font-size: 12px; background: #2d211d; color: #fffdf9;
+}
+.form-actions .cancel { background: transparent; color: #2d211d; border: 1px solid #2d211d; }
+
+.product-table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+}
+.product-table th, .product-table td {
+  padding: 10px; border-bottom: 1px solid #ead6d2; text-align: left;
+}
+.thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
+
+.product-table button {
+  padding: 6px 12px; margin-right: 6px; border: none; border-radius: 14px; font-size: 11px; background: #ead6d2;
+}
+.product-table .delete { background: #f2c6c6; }

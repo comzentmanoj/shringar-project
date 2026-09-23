@@ -1,0 +1,226 @@
+<!-- src/app/pages/home/home.component.html -->
+<!-- ========================= HEADER ========================= -->
+<header>
+  <a routerLink="/" class="logo">
+    <span class="logo-main">Shringar</span>
+    <span class="logo-sub">by Lakshuu</span>
+  </a>
+
+  <nav>
+    <a href="#collection">Collection</a>
+    <a href="#story">Our Story</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <button class="nav-whatsapp" (click)="openWhatsApp()">WhatsApp Us</button>
+</header>
+
+<main>
+  <!-- ========================= HERO CAROUSEL ========================= -->
+  <section class="hero">
+    <div class="hero-carousel">
+      @if (heroProducts().length > 0) {
+        @for (product of heroProducts(); track product._id; let i = $index) {
+          <div class="hero-slide" [class.active]="i === heroIndex()">
+            <div class="hero-content">
+              <p class="eyebrow">Modern Shringar</p>
+              <h1>{{ product.name }}</h1>
+              <p class="hero-text">{{ product.category }} · ₹{{ product.price | number }}</p>
+              <button
+                class="primary-button"
+                (click)="openWhatsApp(product.name, product.productCode, product.price, resolveImage(product.imageUrl))"
+              >
+                Enquire on WhatsApp <span>→</span>
+              </button>
+            </div>
+
+            <div class="hero-image">
+              <img [src]="resolveImage(product.imageUrl)" [alt]="product.name" />
+              <div class="hero-label">
+                <span>{{ (i + 1) < 10 ? '0' + (i + 1) : (i + 1) }}</span> {{ product.category }}
+              </div>
+            </div>
+          </div>
+        }
+
+        <div class="hero-dots">
+          @for (product of heroProducts(); track product._id; let i = $index) {
+            <button
+              class="hero-dot"
+              [class.active]="i === heroIndex()"
+              (click)="goToHeroSlide(i)"
+              [attr.aria-label]="'Go to slide ' + (i + 1)"
+            ></button>
+          }
+        </div>
+      } @else {
+        <div class="hero-slide active">
+          <div class="hero-content">
+            <p class="eyebrow">Modern Shringar</p>
+            <h1>Jewellery that <em>feels like you.</em></h1>
+            <p class="hero-text">
+              Minimal jewellery inspired by the beauty of Indian traditions, designed for the woman of today.
+            </p>
+            <button class="primary-button" (click)="openWhatsApp()">
+              Explore the collection <span>→</span>
+            </button>
+          </div>
+
+          <div class="hero-image">
+            <img
+              src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=1200&q=85"
+              alt="Minimal jewellery"
+            />
+            <div class="hero-label"><span>01</span> Everyday elegance</div>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ========================= CATEGORIES ========================= -->
+  <section class="categories">
+    <p class="eyebrow center">Shop by Category</p>
+    <h2>Find your Shringar</h2>
+
+    <div class="category-grid">
+      @for (cat of categories; track cat.slug) {
+        <a class="category-tile" [routerLink]="['/category', cat.slug]">
+          <div class="category-image">
+            <img [src]="cat.image" [alt]="cat.name" />
+          </div>
+          <span class="category-name">{{ cat.name }}</span>
+        </a>
+      }
+    </div>
+  </section>
+
+  <!-- ========================= INTRO ========================= -->
+  <section class="intro">
+    <p class="eyebrow">The Shringar Edit</p>
+    <h2>Little details.<br /><em>Big difference.</em></h2>
+    <p class="intro-text">
+      Jewellery doesn't always have to make a statement. Sometimes, the smallest details say the most.
+      Discover pieces designed to become part of your everyday.
+    </p>
+  </section>
+
+  <!-- ========================= COLLECTION ========================= -->
+  <section class="collection" id="collection">
+    <div class="collection-header">
+      <div>
+        <p class="eyebrow">Curated for you</p>
+        <h2>The Collection</h2>
+      </div>
+      <a href="#collection" class="view-all">View all →</a>
+    </div>
+
+    @if (loading()) {
+      <p class="state-text">Loading the collection…</p>
+    } @else if (errorMessage()) {
+      <p class="state-text">{{ errorMessage() }}</p>
+    } @else if (products().length === 0) {
+      <p class="state-text">New pieces are on their way. Check back soon.</p>
+    } @else {
+      <div class="products">
+        @for (product of products(); track product._id) {
+          <article class="product">
+            <div class="product-image">
+              <img [src]="resolveImage(product.imageUrl)" [alt]="product.name" />
+              <button
+                class="product-whatsapp"
+                (click)="openWhatsApp(product.name, product.productCode, product.price, resolveImage(product.imageUrl))"
+              >
+                Enquire on WhatsApp
+              </button>
+            </div>
+
+            <div class="product-info">
+              <div>
+                <p class="product-category">{{ product.category }}</p>
+                <h3 class="product-name">{{ product.name }}</h3>
+              </div>
+              <span class="product-price">₹{{ product.price | number }}</span>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+
+  <!-- ========================= STORY ========================= -->
+  <section class="story" id="story">
+    <div class="story-image">
+      <img
+        src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1000&q=85"
+        alt="Shringar by Lakshuu founder"
+      />
+    </div>
+
+    <div class="story-content">
+      <p class="eyebrow">Our Story</p>
+      <h2>Rooted in shringar. <em>Made for today.</em></h2>
+      <p class="story-text">
+        Shringar by Lakshuu began with a simple belief — jewellery should feel personal. Inspired by
+        India's timeless love for adornment, we create minimal pieces that fit effortlessly into
+        everyday life.
+      </p>
+      <button class="story-button" (click)="openWhatsApp()">Talk to us →</button>
+    </div>
+  </section>
+
+  <!-- ========================= VALUES ========================= -->
+  <section class="values">
+    <p class="eyebrow">Why Shringar</p>
+    <h2>Made for your everyday.</h2>
+
+    <div class="value-grid">
+      <div class="value">
+        <div class="value-number">01</div>
+        <h3>Thoughtfully Curated</h3>
+        <p>Pieces selected with simplicity, versatility and everyday wear in mind.</p>
+      </div>
+
+      <div class="value">
+        <div class="value-number">02</div>
+        <h3>Indian at Heart</h3>
+        <p>Inspired by the timeless beauty of Indian shringar with a modern point of view.</p>
+      </div>
+
+      <div class="value">
+        <div class="value-number">03</div>
+        <h3>Effortlessly You</h3>
+        <p>Jewellery that complements your style rather than defining it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= WHATSAPP CTA ========================= -->
+  <section class="cta" id="contact">
+    <p class="eyebrow">Found something you love?</p>
+    <h2>Let's make it yours.</h2>
+    <p class="cta-text">
+      Have a question about a piece? Talk directly with Shringar by Lakshuu on WhatsApp.
+    </p>
+    <button class="cta-button" (click)="openWhatsApp()">Chat with Shringar →</button>
+  </section>
+</main>
+
+<!-- ========================= FOOTER ========================= -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Shringar by Lakshuu</div>
+      <p class="footer-tagline">Jewellery for your everyday shringar.</p>
+    </div>
+
+    <div class="footer-links">
+      <a href="#collection">Collection</a>
+      <a href="#story">Our Story</a>
+      <a href="#contact">Contact</a>
+      <a href="https://instagram.com/" target="_blank">Instagram</a>
+    </div>
+  </div>
+
+  <div class="copyright">© 2026 Shringar by Lakshuu. All rights reserved.</div>
+</footer>

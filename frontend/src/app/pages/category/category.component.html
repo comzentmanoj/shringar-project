@@ -1,0 +1,154 @@
+<!-- ========================= HEADER ========================= -->
+<header>
+  <a routerLink="/" class="logo">
+    <span class="logo-main">Shringar</span>
+    <span class="logo-sub">by Lakshuu</span>
+  </a>
+
+  <nav>
+    <a routerLink="/">Home</a>
+    <a routerLink="/" fragment="collection">Collection</a>
+    <a routerLink="/" fragment="contact">Contact</a>
+  </nav><!-- src/app/pages/category/category.component.html -->
+<!-- ========================= HEADER ========================= -->
+<header>
+  <a routerLink="/" class="logo">
+    <span class="logo-main">Shringar</span>
+    <span class="logo-sub">by Lakshuu</span>
+  </a>
+
+  <nav>
+    <a routerLink="/">Home</a>
+    <a routerLink="/" fragment="collection">Collection</a>
+    <a routerLink="/" fragment="contact">Contact</a>
+  </nav>
+
+  <button class="nav-whatsapp" (click)="openWhatsApp()">WhatsApp Us</button>
+</header>
+
+<main>
+  <!-- ========================= CATEGORY HEADER ========================= -->
+  <section class="category-hero">
+    <p class="eyebrow">Shop the edit</p>
+    <h1>{{ categoryLabel() }}</h1>
+    <a routerLink="/" class="back-link">← Back to Home</a>
+  </section>
+
+  <!-- ========================= PRODUCT GRID ========================= -->
+  <section class="collection">
+    @if (loading()) {
+      <p class="state-text">Loading products…</p>
+    } @else if (errorMessage()) {
+      <p class="state-text">{{ errorMessage() }}</p>
+    } @else if (filteredProducts().length === 0) {
+      <p class="state-text">No products found in this category yet. Check back soon.</p>
+    } @else {
+      <div class="products">
+        @for (product of filteredProducts(); track product._id) {
+          <article class="product">
+            <div class="product-image">
+              <img [src]="resolveImage(product.imageUrl)" [alt]="product.name" />
+              <button
+                class="product-whatsapp"
+                (click)="openWhatsApp(product.name, product.productCode, product.price)"
+              >
+                Enquire on WhatsApp
+              </button>
+            </div>
+
+            <div class="product-info">
+              <div>
+                <p class="product-category">{{ product.category }}</p>
+                <h3 class="product-name">{{ product.name }}</h3>
+              </div>
+              <span class="product-price">₹{{ product.price | number }}</span>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+</main>
+
+<!-- ========================= FOOTER ========================= -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Shringar by Lakshuu</div>
+      <p class="footer-tagline">Jewellery for your everyday shringar.</p>
+    </div>
+
+    <div class="footer-links">
+      <a routerLink="/">Home</a>
+      <a routerLink="/" fragment="contact">Contact</a>
+      <a href="https://instagram.com/" target="_blank">Instagram</a>
+    </div>
+  </div>
+
+  <div class="copyright">© 2026 Shringar by Lakshuu. All rights reserved.</div>
+</footer>
+
+  <button class="nav-whatsapp" (click)="openWhatsApp()">WhatsApp Us</button>
+</header>
+
+<main>
+  <!-- ========================= CATEGORY HEADER ========================= -->
+  <section class="category-hero">
+    <p class="eyebrow">Shop the edit</p>
+    <h1>{{ categoryLabel() }}</h1>
+    <a routerLink="/" class="back-link">← Back to Home</a>
+  </section>
+
+  <!-- ========================= PRODUCT GRID ========================= -->
+  <section class="collection">
+    @if (loading()) {
+      <p class="state-text">Loading products…</p>
+    } @else if (errorMessage()) {
+      <p class="state-text">{{ errorMessage() }}</p>
+    } @else if (filteredProducts().length === 0) {
+      <p class="state-text">No products found in this category yet. Check back soon.</p>
+    } @else {
+      <div class="products">
+        @for (product of filteredProducts(); track product._id) {
+          <article class="product">
+            <div class="product-image">
+              <img [src]="resolveImage(product.imageUrl)" [alt]="product.name" />
+              <button
+                class="product-whatsapp"
+                (click)="openWhatsApp(product.name, product.productCode, product.price)"
+              >
+                Enquire on WhatsApp
+              </button>
+            </div>
+
+            <div class="product-info">
+              <div>
+                <p class="product-category">{{ product.category }}</p>
+                <h3 class="product-name">{{ product.name }}</h3>
+              </div>
+              <span class="product-price">₹{{ product.price | number }}</span>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+</main>
+
+<!-- ========================= FOOTER ========================= -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Shringar by Lakshuu</div>
+      <p class="footer-tagline">Jewellery for your everyday shringar.</p>
+    </div>
+
+    <div class="footer-links">
+      <a routerLink="/">Home</a>
+      <a routerLink="/" fragment="contact">Contact</a>
+      <a href="https://instagram.com/" target="_blank">Instagram</a>
+    </div>
+  </div>
+
+  <div class="copyright">© 2026 Shringar by Lakshuu. All rights reserved.</div>
+</footer>
