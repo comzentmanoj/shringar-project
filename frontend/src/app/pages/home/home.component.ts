@@ -22,6 +22,7 @@ const HERO_SLIDE_INTERVAL_MS = 4500;
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  readonly instagramUrl = environment.instagramUrl;
   products = signal<Product[]>([]);
   loading = signal<boolean>(true);
   errorMessage = signal<string>('');

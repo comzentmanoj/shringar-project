@@ -19,6 +19,7 @@ interface CategoryOption {
   styleUrl: './category.component.scss',
 })
 export class CategoryComponent implements OnInit {
+  readonly instagramUrl = environment.instagramUrl;
   allProducts = signal<Product[]>([]);
   loading = signal<boolean>(true);
   errorMessage = signal<string>('');
